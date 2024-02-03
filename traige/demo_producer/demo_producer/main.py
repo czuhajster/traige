@@ -11,17 +11,17 @@ async def get_root():
 
 
 @app.get("/v2/body")
-async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: bool, with_samples: bool):
+async def get_body(user_id: str, start_date: str = "", end_date: str = "", to_webhook: bool = False, with_samples: bool = False):
         response = {
             "status": "success",
             "type": "body",
             "user": {
-                "active": true,
-                "created_at": null,
-                "last_webhook_update": null,
+                "active": True,
+                "created_at": None,
+                "last_webhook_update": None,
                 "provider": "APPLE",
                 "reference_id": "",
-                "scopes": null,
+                "scopes": None,
                 "user_id": user_id
             },
             "data": [
@@ -56,14 +56,14 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                     ]
                 },
                 "device_data": {
-                    "activation_timestamp": null,
-                    "hardware_version": null,
-                    "manufacturer": null,
-                    "name": null,
+                    "activation_timestamp": None,
+                    "hardware_version": None,
+                    "manufacturer": None,
+                    "name": None,
                     "other_devices": [],
-                    "sensor_state": null,
-                    "serial_number": null,
-                    "software_version": null
+                    "sensor_state": None,
+                    "serial_number": None,
+                    "software_version": None
                 },
                 "glucose_data": {
                     "blood_glucose_samples": [
@@ -101,9 +101,9 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                     "daily_patterns": [],
                     "day_avg_blood_glucose_mg_per_dL": 163.56044592506305,
                     "detailed_blood_glucose_samples": [],
-                    "gmi": null,
-                    "sensor_usage": null,
-                    "time_in_range": null
+                    "gmi": None,
+                    "sensor_usage": None,
+                    "time_in_range": None
                 },
                 "heart_data": {
                     "afib_classification_samples": [],
@@ -927,13 +927,13 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                     },
                     "summary": {
                         "avg_hr_bpm": 120.18388352021609,
-                        "avg_hrv_rmssd": null,
+                        "avg_hrv_rmssd": None,
                         "avg_hrv_sdnn": 84.2635069166341,
                         "hr_zone_data": [],
                         "max_hr_bpm": 50.26205196642002,
                         "min_hr_bpm": 105.71794817044378,
-                        "resting_hr_bpm": null,
-                        "user_max_hr_bpm": null
+                        "resting_hr_bpm": None,
+                        "user_max_hr_bpm": None
                     }
                     },
                     "pulse_wave_velocity_samples": [],
@@ -966,7 +966,7 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                     ]
                 },
                 "hydration_data": {
-                    "day_total_water_consumption_ml": null,
+                    "day_total_water_consumption_ml": None,
                     "hydration_amount_samples": []
                 },
                 "ketone_data": {
@@ -988,8 +988,8 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                         "measurement_time": "2024-02-03T17:59:01.023000+00:00",
                         "muscle_mass_g": 38.18570284740929,
                         "skin_fold_mm": 64.72266964893663,
-                        "urine_color": null,
-                        "user_notes": null,
+                        "urine_color": None,
+                        "user_notes": None,
                         "water_percentage": 73.52346788365473,
                         "weight_kg": 68.46739706139452
                     },
@@ -1007,8 +1007,8 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                         "measurement_time": "2024-02-03T18:09:01.023000+00:00",
                         "muscle_mass_g": 26.252621923554035,
                         "skin_fold_mm": 89.4552854565977,
-                        "urine_color": null,
-                        "user_notes": null,
+                        "urine_color": None,
+                        "user_notes": None,
                         "water_percentage": 77.95362532183803,
                         "weight_kg": 54.4308007557503
                     },
@@ -1026,8 +1026,8 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                         "measurement_time": "2024-02-03T18:19:01.023000+00:00",
                         "muscle_mass_g": 28.90007332707775,
                         "skin_fold_mm": 47.3386016748662,
-                        "urine_color": null,
-                        "user_notes": null,
+                        "urine_color": None,
+                        "user_notes": None,
                         "water_percentage": 20.38998734385831,
                         "weight_kg": 74.16810540719287
                     },
@@ -1045,8 +1045,8 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                         "measurement_time": "2024-02-03T18:29:01.023000+00:00",
                         "muscle_mass_g": 39.35842442050337,
                         "skin_fold_mm": 82.4775481750349,
-                        "urine_color": null,
-                        "user_notes": null,
+                        "urine_color": None,
+                        "user_notes": None,
                         "water_percentage": 73.42556500233597,
                         "weight_kg": 60.17301153020138
                     },
@@ -1064,8 +1064,8 @@ async def get_body(user_id: str, start_date: str, end_date: str, to_webhook: boo
                         "measurement_time": "2024-02-03T18:39:01.023000+00:00",
                         "muscle_mass_g": 33.61239725035969,
                         "skin_fold_mm": 21.004262183996858,
-                        "urine_color": null,
-                        "user_notes": null,
+                        "urine_color": None,
+                        "user_notes": None,
                         "water_percentage": 74.26858600315536,
                         "weight_kg": 93.43145245504061
                     }
