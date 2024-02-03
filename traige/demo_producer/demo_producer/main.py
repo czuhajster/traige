@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
 app = FastAPI(
     title="Demo TrAIge Producer",
