@@ -7,8 +7,7 @@ CMD [ "uvicorn", "demo_producer.main:app", "--host", "0.0.0.0", "--port", "8080"
 RUN groupadd -r app \
     && useradd --no-log-init -r -g app app \
     && mkdir /app \
-    && chown app:app /app \
-    && chown -R app:app /opt/acc-py/venvs/acc-py-venv
+    && chown app:app /app
 
 # Use a non-root user to run the app.
 USER app
