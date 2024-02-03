@@ -1,11 +1,15 @@
 services:
-  demo-producer:
+  demo_producer:
+    container_name: traige_demo_producer
     build:
       context: "./demo_producer"
       dockerfile: Dockerfile
     ports:
-      - "80:8080"
+      - "8090:8080"
   backend:
+    container_name: traige_backend
     build:
       context: "./backend"
       dockerfile: Dockerfile
+    ports:
+      - "8091:8000"
