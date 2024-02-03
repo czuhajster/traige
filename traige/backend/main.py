@@ -10,7 +10,7 @@ factory = Factory()
 socket_manager = WebSocketManager()
 
 # Global variables
-PRODUCER_ENDPOINT = 'demo_producer:8080'
+PRODUCER_ENDPOINT = 'http://traige_demo_producer:8080'
 PRODUCER_USER_IDS = ['user_123']  # Example user IDs
 FETCH_INTERVALS = 5  # Fetch every five seconds
 
