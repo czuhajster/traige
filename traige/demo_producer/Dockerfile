@@ -13,6 +13,7 @@ WORKDIR /app
 
 # Copy the requirements file.
 COPY --chown=app:app requirements.txt requirements.txt
+COPY --chown=app:app dead-person.csv dead-person.csv
 
 RUN  python -m pip install --no-cache-dir -r requirements.txt 
 
