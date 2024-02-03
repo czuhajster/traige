@@ -10,7 +10,7 @@ factory = Factory()
 socket_manager = WebSocketManager()
 
 # Global variables
-PRODUCER_ENDPOINT = 'http://127.0.0.1:2020'
+PRODUCER_ENDPOINT = 'demo_producer:8080'
 PRODUCER_USER_IDS = ['user_123']  # Example user IDs
 FETCH_INTERVALS = 5  # Fetch every five seconds
 
