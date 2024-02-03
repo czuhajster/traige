@@ -4,8 +4,8 @@ EXPOSE 8080
 
 CMD [ "uvicorn", "demo_producer.main:app", "--host", "0.0.0.0", "--port", "8080" ]
 
-RUN groupadd -r app \
-    && useradd --no-log-init -r -g app app \
+RUN addgroup -S app \
+    && adduser -S app app \
     && mkdir /app \
     && chown app:app /app
 
