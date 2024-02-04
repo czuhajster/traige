@@ -6,7 +6,6 @@ from .generate import generate_varied_activity_data
 
 
 FIELDNAMES = ["diastolic", "systolic", "bpm", "oxygen saturation percentage"]
-STANDARD_ACTIVITIES = ["running", "jogging", "walking"]
 SOLDIER_STATE = dict()
 
 
@@ -32,12 +31,7 @@ async def get_body(user_id: str, start_date: str = "", end_date: str = "", to_we
     if not SOLDIER_STATE.get(user_id):
         SOLDIER_STATE[user_id] = "healthy"
 
-    if SOLDIER_STATE[user_id] == "healthy":
-        activity_index = random.randint(0, 2)
-        activity = STANDARD_ACTIVITIES[activity_index]
-    else:
-        activity = SOLDIER_STATE[user_id]
-
+    activity = SOLDIER_STATE[user_id]
     generated_data = generate_varied_activity_data(activity)
 
     response = {
