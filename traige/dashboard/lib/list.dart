@@ -1,5 +1,4 @@
 import 'package:dashboard/List.dart';
-import 'package:dashboard/list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'dart:async';
@@ -11,6 +10,11 @@ import 'list.dart';
 // void main() {
 //   runApp(InjuryView());
 // }
+
+
+void main() {
+  fetchData();
+}
 
 class InjuryView extends StatelessWidget {
   static List<InjuryCase> injuryList = [
@@ -82,6 +86,23 @@ class InjuryView extends StatelessWidget {
   }
 }
 
+Future<void> fetchData() async {
+  final response = await http.get(Uri.parse('https://api.example.com/data'));
+
+  if (response.statusCode == 200) {
+    // Parse the JSON data
+    Map<String, dynamic> jsonData = json.decode(response.body);
+
+    print(jsonData);
+    // call createCase function
+    createCase(jsonData);
+
+  } else {
+    print('Failed to load data. Status code: ${response.statusCode}');
+  }
+}
+
+
 InjuryCase? findCaseById(String user_id) {
   try {
     return InjuryView.injuryList.firstWhere((user) => user.user_id == user_id);
@@ -90,8 +111,15 @@ InjuryCase? findCaseById(String user_id) {
   }
 }
 
-void createCase(String user_id, String newStatus, int newBpm, int newOxygen_saturation, int newDiastolic, int newSystolic) {
+void createCase(jsonData) {
   // Check if the user with user_id exists
+  String user_id = jsonData['user_id'];
+  String newStatus = jsonData['status'];
+  int newBpm = jsonData['bpm'];
+  int newOxygen_saturation = jsonData['oxygen_saturation'];
+  int newDiastolic = jsonData['diastolic'];
+  int newSystolic = jsonData['systolic'];
+  
   InjuryCase? existingCase = findCaseById(user_id);
 
   if (existingCase != null) {
@@ -190,19 +218,5 @@ class InjuryCaseWidget extends StatelessWidget {
         ],
       ),
           );
-    //       Align(
-    //         alignment: Alignment.centerLeft,
-    //         child: Text(
-    //           'User ID: $user_id, Status: $status',
-    //           style: TextStyle(fontWeight: FontWeight.bold),
-    //         ),
-    //       ),
-    //       Align(
-    //         alignment: Alignment.centerLeft,
-    //         child: Text('BPM: $bpm, Saturation: $oxygen_saturation, Diastolic: $diastolic, Systolic: $systolic'),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
