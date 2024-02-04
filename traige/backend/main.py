@@ -2,6 +2,7 @@ import httpx
 import asyncio
 from fastapi import FastAPI, WebSocket
 import os
+import json
 
 # Import Factory and WebSocket Manager
 from app import Factory, WebSocketManager
@@ -11,7 +12,8 @@ factory = Factory()
 socket_manager = WebSocketManager()
 
 # Global variables
-PRODUCER_ENDPOINT = os.environ.get('PRODUCER_ENDPOINT', 'https://traige-demo.saajan.net/v2/body')
+PRODUCER_ENDPOINT = os.environ.get(
+    'PRODUCER_ENDPOINT', 'https://traige-demo.saajan.net/v2/body')
 # Adjust this list to include all user IDs you need to manage
 PRODUCER_USER_IDS = ['user_a', 'user_b', 'user_c']
 FETCH_INTERVALS = 5  # Fetch every five seconds
@@ -50,7 +52,8 @@ async def schedule_fetches(interval: int):
             result = await fetch_data_for_user(user_id)
             if result is not None:
                 # Convert the result to a JSON string or similar for WebSocket transmission
-                await socket_manager.broadcast(str(result))
+                json_result = json.dumps(result)
+                await socket_manager.broadcast(json_result)
         await asyncio.sleep(interval)
 
 
