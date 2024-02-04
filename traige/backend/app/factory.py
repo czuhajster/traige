@@ -7,6 +7,7 @@ import joblib
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
+
 class Factory:
     SCALER_PATH = 'app/scaler_model.pkl'
     MODEL_PATH = 'app/model.pkl'
@@ -60,7 +61,8 @@ class Factory:
                 "oxygen_saturation": data["extractedData"]["spO2"][0],
                 "diastolic": data["extractedData"]["diastolic"][0],
                 "systolic": data["extractedData"]["systolic"][0],
-            }
+            },
+            "confidence": data["confidence"] * 100
         }
 
     def process_data(self, res):
@@ -82,10 +84,15 @@ class Factory:
 
             # Predict using the model
             prediction = self.model.predict(scaled_data)
+
+            # Confidence
+            confidence = self.model.predict_proba(scaled_data)
+
             return Factory.data_aggregator({
                 "prediction": prediction[0],
                 "extractedData": extractedData,
-                "user_id": res['user']['user_id']
+                "user_id": res['user']['user_id'],
+                "confidence": confidence[:, 1][0]
             })
         except KeyError as e:
             logging.error(f'Missing keys from producer: {e}')
