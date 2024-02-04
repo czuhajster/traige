@@ -1,31 +1,21 @@
-# WElCOME TO TRAiGE! 🌟
+# WElCOME TO TRAiGE! ⚕️
 
-## The Future of Automated, Real-Time Triage Systems is Here!
+## The Future of Automated, Real-Time Triage Systems
 
-We're thrilled to introduce **Traige**, the groundbreaking solution designed to revolutionize the way healthcare and support systems perform triage. With Traige, we're bringing the power of automation and real-time processing to your fingertips, ensuring that you can make faster, more accurate decisions when it matters the most.
+We are thrilled to introduce **Traige**, the groundbreaking solution designed to revolutionize the way military personnel and healthcare professionals perform medical triage. With Traige, we are bringing the power of automation and real-time processing to your fingertips, ensuring that you can make faster, more accurate decisions when it matters the most.
 
 ### 🚀 Features
 
-- **Real-Time Data Processing**: Say goodbye to delays! Traige processes information as it comes, ensuring you're always working with the most current data.
-- **Automated Triage**: Our advanced algorithms analyze incoming data to prioritize cases based on severity and urgency, helping you focus on what truly matters.
-- **User-Friendly Interface**: Whether you're tech-savvy or not, our intuitive interface makes it easy for anyone to jump in and start using Traige.
-- **Scalable Solution**: From small clinics to large hospitals, Traige is designed to scale with your needs, ensuring we grow together.
-- **Secure and Reliable**: We take privacy and security seriously, ensuring your data is protected every step of the way.
+- **Automated Triage**: Our machine model algorithm, trained on medical data, performs an automated medical triage of wounded and injured based on the vital signs.
+- **Real-Time Data Processing**: Traige performs real-time data analysis, as data is streamed from the wearable and mediated through Terra API.
+- **Alerting**: Whether you're tech-savvy or not, our intuitive interface makes it easy for anyone to jump in and start using Traige.
 
 ### 💡 Why Traige?
 
-In today's fast-paced world, making quick and accurate decisions can save lives. That's where Traige comes in. We believe that by providing you with the tools to automate and expedite the triage process, we can make a real difference. Whether it's healthcare, customer support, or any field requiring prioritization and quick response, Traige is here to help.
-
-### 🌈 Getting Started
-
-Getting started with Traige is as easy as 1, 2, 3:
-
-1. **Sign Up**: Register your organization with Traige.
-2. **Integration**: Easily integrate Traige with your existing systems.
-3. **Go Live**: Start experiencing the benefits of automated, real-time triage.
+In high-pressure circumstances, where medical personnel is overloaded, the process of obtaining critical medical data can be ineffective or inaccurate. Triage solves this issue by analysing vital signs of each individual and ranking them by the severity of their injuries.
 
 ### 📚 Documentation
 
-For detailed information on installation, setup, and usage, check out our [Documentation](#).
+For detailed information on installation, setup, and usage, check out our [Documentation](https://traige-demo.saajan.net/docs).
 
 ### 🤝 Support
