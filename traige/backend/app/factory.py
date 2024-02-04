@@ -1,7 +1,11 @@
+import warnings
 import logging
+
 import pandas as pd
 import joblib
 
+
+warnings.filterwarnings("ignore", category=UserWarning)
 
 class Factory:
     SCALER_PATH = 'app/scaler_model.pkl'
