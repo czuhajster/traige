@@ -73,27 +73,49 @@ class MyHomePage extends StatelessWidget {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Align(
-          alignment: Alignment.center,
-          child: Container(
-            width: 100,
-            height: 100,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => InjuryView()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.all(20), // Adjust the padding as needed
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InjuryView()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(20), // Adjust the padding as needed
+                    ),
+                    child: const Icon(Icons.person),
+                  ),
+                ),
               ),
-              child: const Icon(Icons.person),
-            ),
+              SizedBox(width: 20), // Add some spacing between the buttons
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Add your logic for the second button here
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(20), // Adjust the padding as needed
+                    ),
+                    child: const Icon(Icons.add),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-        ),
-      );
+          ),
+        );
     // );
       // ),
       // ),
