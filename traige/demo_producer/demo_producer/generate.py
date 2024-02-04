@@ -12,7 +12,7 @@ def generate_varied_activity_data(activity):
         systolic = random.randint(70, 85)
         bpm = random.randint(40, 50)
         oxygen_saturation = random.randint(55, 70)
-    else: # dead
+    else:  # dead
         diastolic = 0
         systolic = 0
         bpm = 0

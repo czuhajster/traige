@@ -7,7 +7,7 @@ class InjuryCase {
   final String user_id;
   String status;
   InjuryData data;
-  int confidence;
+  double confidence;
 
   InjuryCase({
     required this.user_id,
@@ -55,6 +55,7 @@ class _InjuryViewState extends State<InjuryView> {
 
     channel.stream.listen((message) {
       print('Received: $message');
+      // print('Received: ${message.runes.toList()}');
       processReceivedData(message);
     }, onDone: () {
       print('Channel closed');
@@ -65,9 +66,11 @@ class _InjuryViewState extends State<InjuryView> {
 
   void processReceivedData(String message) {
     setState(() {
+    final jsonData = jsonDecode(message.trim()) as Map<String, dynamic>;
+    createCase(jsonData);
       try {
-        Map<String, dynamic> jsonData = json.decode(message);
-        createCase(jsonData);
+        // final jsonData = jsonDecode(message.trim()) as Map<String, dynamic>;
+        // createCase(jsonData);
       } catch (e) {
         print('Error processing received data: $e');
       }
@@ -75,20 +78,15 @@ class _InjuryViewState extends State<InjuryView> {
   }
 
 void createCase(Map<String, dynamic> jsonData) {
-  String user_id = jsonData['user_id'];
+  String user_id = jsonData['user_ID'];
   InjuryCase? existingCase;
 
   try {
     existingCase = injuryList.firstWhere(
       (caseItem) => caseItem.user_id == user_id,
     );
-  } catch (e) {
-    print('Error finding existing case: $e');
-  }
 
-  if (existingCase != null) {
-    // Update the existing case...
-    existingCase.status = jsonData['status'];
+        existingCase.status = jsonData['status'];
     existingCase.data = InjuryData(
       bpm: jsonData['data']['bpm'],
       oxygen_saturation: jsonData['data']['oxygen_saturation'],
@@ -96,9 +94,8 @@ void createCase(Map<String, dynamic> jsonData) {
       systolic: jsonData['data']['systolic'],
     );
     existingCase.confidence = jsonData['confidence'];
-  } else {
-    // Create a new case and add it to the list...
-    InjuryCase newCase = InjuryCase(
+  } catch (e) {
+        InjuryCase newCase = InjuryCase(
       user_id: user_id,
       status: jsonData['status'],
       data: InjuryData(
@@ -111,6 +108,20 @@ void createCase(Map<String, dynamic> jsonData) {
     );
     injuryList.add(newCase);
   }
+
+  // if (existingCase != null) {
+  //   // Update the existing case...
+  //   existingCase.status = jsonData['status'];
+  //   existingCase.data = InjuryData(
+  //     bpm: jsonData['data']['bpm'],
+  //     oxygen_saturation: jsonData['data']['oxygen_saturation'],
+  //     diastolic: jsonData['data']['diastolic'],
+  //     systolic: jsonData['data']['systolic'],
+  //   );
+  //   existingCase.confidence = jsonData['confidence'];
+  // } else {
+  //   // Create a new case and add it to the list...
+  // }
 
   // Sort the list based on confidence, highest first.
   injuryList.sort((a, b) => b.confidence.compareTo(a.confidence));
