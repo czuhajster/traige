@@ -2,29 +2,14 @@ import random
 
 
 def generate_varied_activity_data(activity):
-    if activity == "running":
-        diastolic = random.randint(70, 85)
-        systolic = random.randint(120, 140)
-        bpm = random.randint(120, 160)
-        oxygen_saturation = random.randint(94, 99)
-    elif activity == "jogging":
-        diastolic = random.randint(65, 80)
-        systolic = random.randint(110, 130)
-        bpm = random.randint(90, 120)
-        oxygen_saturation = random.randint(94, 99)
-    elif activity == "sleeping":
-        diastolic = random.randint(60, 70)
-        systolic = random.randint(90, 110)
-        bpm = random.randint(50, 70)
-        oxygen_saturation = random.randint(93, 98)
-    elif activity == "walking":
-        diastolic = random.randint(60, 80)
-        systolic = random.randint(90, 120)
-        bpm = random.randint(60, 80)
-        oxygen_saturation = random.randint(95, 100)
+    if activity == "healthy":
+        diastolic = random.randint(65, 85)
+        systolic = random.randint(100, 140)
+        bpm = random.randint(80, 140)
+        oxygen_saturation = random.randint(89, 99)
     elif activity == "wounded":
-        diastolic = random.randint(50, 60)
-        systolic = random.randint(80, 90)
+        diastolic = random.randint(45, 55)
+        systolic = random.randint(70, 85)
         bpm = random.randint(40, 50)
         oxygen_saturation = random.randint(55, 70)
     else: # dead
