@@ -1,17 +1,22 @@
 import random
+import pandas as pd
 
 
 def generate_varied_activity_data(activity):
     if activity == "healthy":
-        diastolic = random.randint(65, 85)
-        systolic = random.randint(100, 140)
-        bpm = random.randint(80, 140)
-        oxygen_saturation = random.randint(89, 99)
+        df = pd.read_csv("healthy-person.csv", header=None)
+        random_row = df.sample(n=1)
+        diastolic = int(random_row[0].values[0])
+        systolic = int(random_row[1].values[0])
+        bpm = int(random_row[2].values[0])
+        oxygen_saturation = int(random_row[3].values[0])
     elif activity == "wounded":
-        diastolic = random.randint(45, 55)
-        systolic = random.randint(70, 85)
-        bpm = random.randint(40, 50)
-        oxygen_saturation = random.randint(55, 70)
+        df = pd.read_csv("injured-person.csv", header=None)
+        random_row = df.sample(n=1)
+        diastolic = int(random_row[0].values[0])
+        systolic = int(random_row[1].values[0])
+        bpm = int(random_row[2].values[0])
+        oxygen_saturation = int(random_row[3].values[0])
     else:  # dead
         diastolic = 0
         systolic = 0
