@@ -30,6 +30,11 @@ class Factory:
 
         # Define critical thresholds
         critical_thresholds = {
+            'bpm_low': 1,  # Below this could be severe bradycardia
+            'bpm_high': 180,  # Above this could be severe tachycardia
+            'oxygen_saturation_low': 70,  # Below this is severe hypoxemia
+            'systolic_low': 90,  # Below this could indicate hypotension
+            'diastolic_low': 60,  # Below this could also indicate hypotension
             "bpm_low": 40,  # Below this could be severe bradycardia
             "bpm_high": 180,  # Above this could be severe tachycardia
             "oxygen_saturation_low": 70,  # Below this is severe hypoxemia
