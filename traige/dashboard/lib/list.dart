@@ -2,6 +2,20 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+const Map<String, Color> statusColors = {
+  'Healthy': Colors.green,
+  'Wounded': Color.fromARGB(255, 244, 133, 54),
+  'Deceased': Color.fromARGB(255, 0, 0, 0),
+};
+
+const Map<String, int> statusPriority = {
+  'Wounded': 1,
+  'Healthy': 2,
+  'Deceased': 3,
+};
+
+const Color defaultStatusColor = Colors.grey;
+
 // Define the InjuryCase and InjuryData classes outside of any Widget to ensure they are accessible globally
 class InjuryCase {
   final String user_id;
@@ -41,6 +55,21 @@ class _InjuryViewState extends State<InjuryView> {
   late final WebSocketChannel channel;
   List<InjuryCase> injuryList = []; // injuryList is now a non-static member of _InjuryViewState
 
+
+void sortInjuryList() {
+  injuryList.sort((a, b) {
+    // Compare status priorities first
+    int statusCompare = statusPriority[a.status]!.compareTo(statusPriority[b.status]!);
+
+    if (statusCompare != 0) {
+      return statusCompare; // If statuses are different, sort by status priority
+    } else {
+      // If statuses are the same, sort by confidence, highest first
+      return b.confidence.compareTo(a.confidence);
+    }
+  });
+}
+
   @override
   void initState() {
     super.initState();
@@ -55,7 +84,6 @@ class _InjuryViewState extends State<InjuryView> {
 
     channel.stream.listen((message) {
       print('Received: $message');
-      // print('Received: ${message.runes.toList()}');
       processReceivedData(message);
     }, onDone: () {
       print('Channel closed');
@@ -68,9 +96,8 @@ class _InjuryViewState extends State<InjuryView> {
     setState(() {
     final jsonData = jsonDecode(message.trim()) as Map<String, dynamic>;
     createCase(jsonData);
+    sortInjuryList();
       try {
-        // final jsonData = jsonDecode(message.trim()) as Map<String, dynamic>;
-        // createCase(jsonData);
       } catch (e) {
         print('Error processing received data: $e');
       }
@@ -86,7 +113,7 @@ void createCase(Map<String, dynamic> jsonData) {
       (caseItem) => caseItem.user_id == user_id,
     );
 
-        existingCase.status = jsonData['status'];
+    existingCase.status = jsonData['status'];
     existingCase.data = InjuryData(
       bpm: jsonData['data']['bpm'],
       oxygen_saturation: jsonData['data']['oxygen_saturation'],
@@ -108,20 +135,7 @@ void createCase(Map<String, dynamic> jsonData) {
     );
     injuryList.add(newCase);
   }
-
-  // if (existingCase != null) {
-  //   // Update the existing case...
-  //   existingCase.status = jsonData['status'];
-  //   existingCase.data = InjuryData(
-  //     bpm: jsonData['data']['bpm'],
-  //     oxygen_saturation: jsonData['data']['oxygen_saturation'],
-  //     diastolic: jsonData['data']['diastolic'],
-  //     systolic: jsonData['data']['systolic'],
-  //   );
-  //   existingCase.confidence = jsonData['confidence'];
-  // } else {
-  //   // Create a new case and add it to the list...
-  // }
+  sortInjuryList();
 
   // Sort the list based on confidence, highest first.
   injuryList.sort((a, b) => b.confidence.compareTo(a.confidence));
@@ -134,28 +148,60 @@ void createCase(Map<String, dynamic> jsonData) {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Injury List'),
-      ),
-      body: Center(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(8),
-          itemCount: injuryList.length,
-          itemBuilder: (BuildContext context, int index) {
-            final item = injuryList[index];
-            return ListTile(
-              title: Text('Injury ID: ${item.user_id}, Status: ${item.status}, Confidence: ${item.confidence}'),
-              subtitle: Text('BPM: ${item.data.bpm}, Saturation: ${item.data.oxygen_saturation}, Diastolic: ${item.data.diastolic}, Systolic: ${item.data.systolic}'),
-            );
-          },
-        ),
-      ),
-    );
-  }
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      title: const Text('Squad 1'),
+    ),
+    body: ListView.builder(
+      padding: const EdgeInsets.all(8),
+      itemCount: injuryList.length,
+      itemBuilder: (BuildContext context, int index) {
+        final item = injuryList[index];
+        // Ensure the status text is colored according to the user's status
+        // Use `toLowerCase()` to match the map keys exactly
+        Color statusColor = statusColors[item.status] ?? defaultStatusColor;
+
+        return Card(
+          elevation: 4.0,
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ListTile(
+            title: Text(
+              'Name: ${item.user_id}',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            subtitle: Text(
+              'BPM: ${item.data.bpm}, Saturation: ${item.data.oxygen_saturation}, Diastolic: ${item.data.diastolic}, Systolic: ${item.data.systolic}',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            isThreeLine: true,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min, // Limit the row size to its content
+              children: [
+                Text(
+                  item.status,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: statusColor, // Apply the dynamic color to the status text
+                  ),
+                ),
+                SizedBox(width: 8), // Space between text and icon
+                Icon(
+                  Icons.health_and_safety,
+                  color: statusColor, // Apply the dynamic color to the icon
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+
+
 }
 
 void main() => runApp(MaterialApp(home: InjuryView()));
