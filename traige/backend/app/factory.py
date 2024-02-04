@@ -63,7 +63,7 @@ class Factory:
             "status": (
                 "Deceased"
                 if is_dead
-                else ("Unhealthy" if data["prediction"] else "Healthy")
+                else ("Healthy" if data["prediction"] else "Unhealthy")
             ),
             "data": {
                 "bpm": data["extractedData"]["bpm"][0],
