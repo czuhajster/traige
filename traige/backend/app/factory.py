@@ -76,10 +76,7 @@ class Factory:
                 "diastolic": data["extractedData"]["diastolic"][0],
                 "systolic": data["extractedData"]["systolic"][0],
             },
-<<<<<<< HEAD
             "confidence": data["confidence"] * 100
-=======
->>>>>>> caa782b (rebased :p)
         }
 
     def process_data(self, res):
@@ -112,12 +109,8 @@ class Factory:
             return Factory.data_aggregator({
                 "prediction": prediction[0],
                 "extractedData": extractedData,
-<<<<<<< HEAD
                 "user_id": res['user']['user_id'],
                 "confidence": confidence[:, 1][0]
-=======
-                "user_id": res["user"]["user_id"],
->>>>>>> caa782b (rebased :p)
             })
         except KeyError as e:
             logging.error(f"Missing keys from producer: {e}")
