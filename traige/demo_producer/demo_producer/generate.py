@@ -23,10 +23,10 @@ def generate_varied_activity_data(activity):
         bpm = random.randint(60, 80)
         oxygen_saturation = random.randint(95, 100)
     elif activity == "wounded":
-        diastolic = random.randint(59, 62)
-        systolic = random.randint(126, 136)
-        bpm = random.randint(73, 74)
-        oxygen_saturation = random.randint(94, 95)
+        diastolic = random.randint(50, 60)
+        systolic = random.randint(80, 90)
+        bpm = random.randint(40, 50)
+        oxygen_saturation = random.randint(55, 70)
     else: # dead
         diastolic = 0
         systolic = 0
