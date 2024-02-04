@@ -7,7 +7,10 @@ CMD [ "uvicorn", "demo_producer.main:app", "--host", "0.0.0.0", "--port", "8080"
 RUN addgroup -S app \
     && adduser -S -H app app \
     && mkdir /app \
-    && chown app:app /app
+    && chown app:app /app \
+    && mkdir /app/data \
+    && chown app:app /app/data
+
 
 WORKDIR /app
 
