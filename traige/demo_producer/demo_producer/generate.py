@@ -1,8 +1,16 @@
-import random
 import pandas as pd
 
 
 def generate_varied_activity_data(activity):
+    """Generates dummy varied activity data.
+
+    Args:
+        activity:
+            Activity name (healthy, wounded or dead).
+    
+    Returns:
+        A list of activity measurements.
+    """
     if activity == "healthy":
         df = pd.read_csv("healthy-person.csv", header=None)
         random_row = df.sample(n=1)

@@ -1,5 +1,3 @@
-import random
-
 from fastapi import FastAPI
 
 from .generate import generate_varied_activity_data
@@ -17,13 +15,15 @@ app = FastAPI(
 
 @app.get("/")
 async def get_root():
-    return f"Hello"
+    return f"OK"
 
 
 @app.get("/change_state")
 async def get_body(user_id: str, new_state: str):
+    """Manipulates the state of the user."""
     global SOLDIER_STATE
     SOLDIER_STATE[user_id] = new_state
+    return f"State changed to {new_state}"
 
 
 @app.get("/v2/body")
@@ -34,6 +34,12 @@ async def get_body(
     to_webhook: bool = False,
     with_samples: bool = False,
 ):
+    """Returns body data.
+
+    This handling function is meant to mimic Terra API's /v2/body endpoint.
+    It returns data in the same format as Terra API's endpoint, except for omitting fields
+    unused for traige.
+    """
     global SOLDIER_STATE
     if not SOLDIER_STATE.get(user_id):
         SOLDIER_STATE[user_id] = "healthy"
