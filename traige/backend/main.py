@@ -10,7 +10,7 @@ factory = Factory()
 socket_manager = WebSocketManager()
 
 # Global variables
-PRODUCER_ENDPOINT = 'http://traige_demo_producer:8080/v2/body'
+PRODUCER_ENDPOINT = 'http://traige_demo_producer_v2:8080/v2/body'
 # PRODUCER_ENDPOINT = "https://traige-demo.saajan.net/v2/body"
 # Adjust this list to include all user IDs you need to manage
 PRODUCER_USER_IDS = ['user_a', 'user_b', 'user_c']
