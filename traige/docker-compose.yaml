@@ -7,6 +7,8 @@ services:
     ports:
       - "8090:8080"
   backend:
+    environment:
+      PRODUCER_ENDPOINT: "http://traige_demo_producer:8080/v2/body"
     container_name: traige_backend
     build:
       context: "./backend"
