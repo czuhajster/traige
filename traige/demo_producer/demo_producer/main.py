@@ -1,14 +1,13 @@
-import csv
-import os.path
 import random
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
 from .generate import generate_varied_activity_data
 
 
 FIELDNAMES = ["diastolic", "systolic", "bpm", "oxygen saturation percentage"]
 STANDARD_ACTIVITIES = ["running", "jogging", "walking"]
+SOLDIER_STATE = dict()
 
 
 app = FastAPI(
@@ -21,47 +20,25 @@ async def get_root():
     return f"Hello"
 
 
-@app.get("/speedup")
-async def get_body(user_id: str):
-    generated_data_list = []
-    for _ in range(90):
-        activity_index = random.randint(0, 2)
-        activity = STANDARD_ACTIVITIES[activity_index]
-        generated_data = generate_varied_activity_data(activity)
-        generated_data_list.append(generated_data)
-    csv_file_path = f"data/{user_id}.csv"
-    with open(csv_file_path, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=FIELDNAMES)
-        writer.writeheader()
-        writer = csv.writer(csvfile)
-        writer.writerows(generated_data_list)
+@app.get("/change_state")
+async def get_body(user_id: str, new_state: str):
+    global SOLDIER_STATE
+    SOLDIER_STATE[user_id] = new_state
 
 
 @app.get("/v2/body")
 async def get_body(user_id: str, start_date: str = "", end_date: str = "", to_webhook: bool = False, with_samples: bool = False):
-    csv_file_path = f"data/{user_id}.csv"
-    if not os.path.isfile(csv_file_path):
-        with open(csv_file_path, 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=FIELDNAMES)
-            writer.writeheader()
-            num_lines = 0 
-    else:
-        # get the previous row and file size in lines
-        with open(csv_file_path, "rb") as f:
-            num_lines = sum(1 for _ in f)
+    global SOLDIER_STATE
+    if not SOLDIER_STATE.get(user_id):
+        SOLDIER_STATE[user_id] = "healthy"
 
-    if num_lines < 100:
+    if SOLDIER_STATE[user_id] == "healthy":
         activity_index = random.randint(0, 2)
         activity = STANDARD_ACTIVITIES[activity_index]
-    elif 100 <= num_lines < 150:
-        activity = "wounded"
     else:
-        activity = "dead"
+        activity = SOLDIER_STATE[user_id]
 
     generated_data = generate_varied_activity_data(activity)
-    with open(csv_file_path, mode="a", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(generated_data)
 
     response = {
         "status": "success",
