@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:http/http.dart' as http;
 import 'list.dart';
 
@@ -12,57 +13,65 @@ import 'list.dart';
 // }
 
 // void main() {
-//   sortInjuryList();
+
 // }
 
-// void testData() {  
-//   Map<String, dynamic> json = {  
-//     'user_id': '002',  
-//     'status': 'healthy',  
-//     'data': {  
-//       'bpm': 66,  
-//       'oxygen_saturation': 55,  
-//       'diastolic': 22,  
-//       'systolic': 33,  
-//     },  
-//   };  
-//   String jsonString = jsonEncode(json);  
-//   print(jsonString);  
-// }
+const user1 = {
+'user_id': '001',
+'status': 'healthy',
+  'data': {
+  'bpm': 60,
+  'oxygen_saturation': 50,
+  'diastolic': 20,
+  'systolic': 30,
+  },
+  'confidence': 10,
+};
+
+const user2 = {
+'user_id': '002',
+'status': 'healthy',
+  'data': {
+  'bpm': 66,
+  'oxygen_saturation': 55,
+  'diastolic': 22,
+  'systolic': 33,
+  },
+'confidence': 70,
+};
+
+const user3 = {
+'user_id': '003',
+'status': 'unhealthy',
+  'data': {
+  'bpm': 66,
+  'oxygen_saturation': 55,
+  'diastolic': 22,
+  'systolic': 33,
+  },
+  'confidence': 50,
+};
+
+const user4 = {
+'user_id': '004',
+'status': 'healthy',
+  'data': {
+  'bpm': 66,
+  'oxygen_saturation': 55,
+  'diastolic': 22,
+  'systolic': 33,
+  },
+  'confidence': 99,
+};
+
+
 
 class InjuryView extends StatelessWidget {
+
   static List<InjuryCase> injuryList = [
-    InjuryCase(
-      user_id: '001',
-      status: 'healthy',
-      data: InjuryData(bpm: 60, oxygen_saturation: 50, diastolic: 20, systolic: 30),
-      confidence: 10,
-    ),
-    InjuryCase(
-      user_id: '002',
-      status: 'dead',
-      data: InjuryData(bpm: 0, oxygen_saturation: 0, diastolic: 0, systolic: 0),
-      confidence: 100,
-    ),
-    InjuryCase(
-      user_id: '003',
-      status: 'unhealthy',
-      data: InjuryData(bpm: 66, oxygen_saturation: 55, diastolic: 22, systolic: 33),
-      confidence: 50,
-    ),
-      InjuryCase(
-      user_id: '004',
-      status: 'healthy',
-      data: InjuryData(bpm: 66, oxygen_saturation: 55, diastolic: 22, systolic: 33),
-      confidence: 70,
-    ),
-      InjuryCase(
-      user_id: '005',
-      status: 'unhealthy',
-      data: InjuryData(bpm: 66, oxygen_saturation: 55, diastolic: 22, systolic: 33),
-      confidence: 50,
-    ),
+
   ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -111,22 +120,30 @@ class InjuryView extends StatelessWidget {
   }
 }
 
-Future<void> fetchData() async {
-  final response = await http.get(Uri.parse('https://api.example.com/data'));
 
-  if (response.statusCode == 200) {
-    // Parse the JSON data
-    Map<String, dynamic> jsonData = json.decode(response.body);
-
-    print(jsonData);
-    // call createCase function
-    createCase(jsonData);
-    sortInjuryList();
-  } else {
-    print('Failed to load data. Status code: ${response.statusCode}');
-  }
+void connectWebSocket() {
+  final channel = WebSocketChannel.connect(
+    Uri.parse('wss://traige-ws.saajan.net/ws'),
+  );
+  channel.stream.listen((message) {
+    print('Received: $message');
+    processReceivedData(message);
+  }, onDone: () {
+    print('Channel closed');
+  }, onError: (error) {
+    print('Websocket Error: $error');
+  });
+  
 }
 
+void processReceivedData(String message) {
+  try {
+    Map<String, dynamic> jsonData = json.decode(message);
+    createCase(jsonData);
+  } catch (e) {
+    print('Error processing received data: $e');
+  }
+}
 
 InjuryCase? findCaseById(String user_id) {
   try {
@@ -171,7 +188,8 @@ void createCase(jsonData) {
     );
     InjuryView.injuryList.add(newCase);
     print('New case created');
-    sortInjuryList();
+
+    InjuryView.injuryList.sort((a, b) => b.confidence.compareTo(a.confidence));
   }
 }
 
@@ -257,16 +275,10 @@ class InjuryCaseWidget extends StatelessWidget {
 
 void sortInjuryList() {
   // Custom sorting function based on health status and confidence
-  InjuryView.injuryList.sort((a, b) {
-    // Sort by health status (unhealthy < healthy < dead)
-    int statusComparison = _compareStatus(a.status, b.status);
-    if (statusComparison != 0) {
-      return statusComparison;
-    } else {
-      // If status is the same, sort by confidence
-      return a.confidence.compareTo(b.confidence);
-    }
-  });
+  InjuryView.injuryList.sort((a, b) =>
+    b.confidence.compareTo(a.confidence)
+
+  );
 }
 
 int _compareStatus(String statusA, String statusB) {
