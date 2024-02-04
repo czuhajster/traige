@@ -15,7 +15,7 @@ socket_manager = WebSocketManager()
 PRODUCER_ENDPOINT = os.environ.get(
     'PRODUCER_ENDPOINT', 'https://traige-demo.saajan.net/v2/body')
 # Adjust this list to include all user IDs you need to manage
-PRODUCER_USER_IDS = ['user_a', 'user_b', 'user_c']
+PRODUCER_USER_IDS = ['user_a', 'user_b', 'user_c', 'user_d', 'user_e', 'user_f', 'user_g', 'user_h', 'user_i']
 FETCH_INTERVALS = 5  # Fetch every five seconds
 
 
