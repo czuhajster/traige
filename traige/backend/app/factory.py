@@ -30,16 +30,11 @@ class Factory:
 
         # Define critical thresholds
         critical_thresholds = {
-            'bpm_low': 1,  # Below this could be severe bradycardia
-            'bpm_high': 180,  # Above this could be severe tachycardia
-            'oxygen_saturation_low': 70,  # Below this is severe hypoxemia
-            'systolic_low': 90,  # Below this could indicate hypotension
-            'diastolic_low': 60,  # Below this could also indicate hypotension
-            "bpm_low": 40,  # Below this could be severe bradycardia
+            "bpm_low": 1,  # Below this could be severe bradycardia
             "bpm_high": 180,  # Above this could be severe tachycardia
             "oxygen_saturation_low": 70,  # Below this is severe hypoxemia
-            "systolic_low": 90,  # Below this could indicate hypotension
-            "diastolic_low": 60,  # Below this could also indicate hypotension
+            "systolic_high": 190,  # Below this could indicate hypotension
+            "diastolic_low": 40,  # Below this could also indicate hypotension
         }
 
         # Check conditions
@@ -49,7 +44,7 @@ class Factory:
             or extractedData["spO2"][0]
             < critical_thresholds["oxygen_saturation_low"]
             or extractedData["systolic"][0]
-            < critical_thresholds["systolic_low"]
+            > critical_thresholds["systolic_high"]
             or extractedData["diastolic"][0]
             < critical_thresholds["diastolic_low"]
         ):
